@@ -1,8 +1,39 @@
 $(document).ready(() => {
 
   $('#currentDay').text(dayjs().format('ddd DD, MMM YYYY hh:mm:ss'));
-  $('currentDay').ready(function () { 
+  $('#currentDay').ready(function () { 
   }, 1000);
+
+  $('.saveBtn').on('click', function() {
+    var text = $(this).siblings('.description').val();
+    var time = $(this).parent().attr('id');
+
+    localStorage.setItem(time, text);
+  });
+
+  function timeColor() {
+    var currentTime = moment().hour();
+
+    $('.time-block').each(function () {
+      var timeBlock = parseInt($(this).attr('id').split('hour')[1]);
+
+      if (timeBlock < currentTime){
+        $(this).removeClass("future");
+        $(this).removeClass("present");
+        $(this).addClass("past");
+      }
+      else if (timeBlock === currentTime) {
+        $(this).removeClass("past");  
+        $(this).removeClass("future");  
+        $(this).addClass("present");
+      }
+      else {
+        $(this).removeClass("past");  
+        $(this).removeClass("present");  
+        $(this).addClass("future");
+      }
+    })
+  }
 
   // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
   // the code isn't run until the browser has finished rendering all the elements
@@ -10,7 +41,7 @@ $(document).ready(() => {
   $(function () {
     // TODO: Add a listener for click events on the save button. This code should
     // use the id in the containing time-block as a key to save the user input in
-    $('.saveBtn').click
+    
     // local storage. HINT: What does `this` reference in the click listener
     // function? How can DOM traversal be used to get the "hour-x" id of the
     // time-block containing the button that was clicked? How might the id be
@@ -29,4 +60,6 @@ $(document).ready(() => {
     // TODO: Add code to display the current date in the header of the page.
   });
 
+ 
 }); 
+
